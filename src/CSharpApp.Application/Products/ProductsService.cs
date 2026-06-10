@@ -24,4 +24,16 @@ public class ProductsService : IProductsService
 
         return (res ?? []).AsReadOnly();
     }
+
+    public async Task<Product?> GetOne(int id)
+    {
+        var response = await _httpClient.GetAsync($"{_restApiSettings.Products}/{id}");
+        response.EnsureSuccessStatusCode();
+
+        var content = await response.Content.ReadAsStringAsync();
+        var res = JsonSerializer.Deserialize<Product>(content);
+
+        return res;
+    }
+
 }
