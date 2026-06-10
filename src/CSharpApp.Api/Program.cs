@@ -7,7 +7,7 @@ builder.Logging.ClearProviders().AddSerilog(logger);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddDefaultConfiguration();
-builder.Services.AddHttpConfiguration();
+builder.Services.AddHttpConfiguration(builder.Configuration);
 builder.Services.AddProblemDetails();
 builder.Services.AddApiVersioning();
 
