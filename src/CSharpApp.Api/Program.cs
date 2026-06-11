@@ -1,3 +1,5 @@
+using CSharpApp.Core.Dtos;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger();
@@ -23,7 +25,7 @@ if (app.Environment.IsDevelopment())
 
 var versionedEndpointRouteBuilder = app.NewVersionedApi();
 
-versionedEndpointRouteBuilder.MapGet("api/v{version:apiVersion}/getproducts", async (IProductsService productsService) =>
+versionedEndpointRouteBuilder.MapGet("api/v{version:apiVersion}/products", async (IProductsService productsService) =>
     {
         var products = await productsService.GetProducts();
         return products;
@@ -31,7 +33,7 @@ versionedEndpointRouteBuilder.MapGet("api/v{version:apiVersion}/getproducts", as
     .WithName("GetProducts")
     .HasApiVersion(1.0);
 
-versionedEndpointRouteBuilder.MapGet("api/v{version:apiVersion}/getproducts/{id}", async (IProductsService productsService, int id) =>
+versionedEndpointRouteBuilder.MapGet("api/v{version:apiVersion}/products/{id}", async (IProductsService productsService, int id) =>
     {
         var product = await productsService.GetOne(id);
         return product;
@@ -39,4 +41,13 @@ versionedEndpointRouteBuilder.MapGet("api/v{version:apiVersion}/getproducts/{id}
     .WithName("GetOneProduct")
     .HasApiVersion(1.0);
 
+versionedEndpointRouteBuilder.MapPost("api/v{version:apiVersion}/products", async (IProductsService productsService, CreateProductRequest request) =>
+    {
+        var createdProduct = await productsService.Create(request);
+
+        return Results.Created($"api/v1/products/{createdProduct?.Id}", createdProduct);
+    })
+    .WithName("CreateProduct")
+    .HasApiVersion(1.0);
+   
 app.Run();
