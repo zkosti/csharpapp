@@ -1,6 +1,6 @@
 namespace CSharpApp.Core.Dtos;
 
-public class CreateProductRequest
+public class ProductCreateRequest
 {
     public string Title { get; set; } = string.Empty;
     public int Price { get; set; }

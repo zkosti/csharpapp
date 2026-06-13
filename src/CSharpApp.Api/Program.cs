@@ -25,6 +25,7 @@ if (app.Environment.IsDevelopment())
 
 var versionedEndpointRouteBuilder = app.NewVersionedApi();
 
+// Products endpoints
 versionedEndpointRouteBuilder.MapGet("api/v{version:apiVersion}/products", async (IProductsService productsService) =>
     {
         var products = await productsService.GetProducts();
@@ -41,7 +42,7 @@ versionedEndpointRouteBuilder.MapGet("api/v{version:apiVersion}/products/{id}", 
     .WithName("GetOneProduct")
     .HasApiVersion(1.0);
 
-versionedEndpointRouteBuilder.MapPost("api/v{version:apiVersion}/products", async (IProductsService productsService, CreateProductRequest request) =>
+versionedEndpointRouteBuilder.MapPost("api/v{version:apiVersion}/products", async (IProductsService productsService, ProductCreateRequest request) =>
     {
         var createdProduct = await productsService.Create(request);
 
@@ -49,5 +50,31 @@ versionedEndpointRouteBuilder.MapPost("api/v{version:apiVersion}/products", asyn
     })
     .WithName("CreateProduct")
     .HasApiVersion(1.0);
-   
+
+// Categories endpoints
+versionedEndpointRouteBuilder.MapGet("api/v{version:apiVersion}/categories", async (ICategoriesService categoriesService) =>
+    {
+        var categories = await categoriesService.GetCategories();
+        return categories;
+    })
+    .WithName("GetCategories")
+    .HasApiVersion(1.0);
+
+versionedEndpointRouteBuilder.MapGet("api/v{version:apiVersion}/categories/{id}", async (ICategoriesService categoriesService, int id) =>
+    {
+        var category = await categoriesService.GetOne(id);
+        return category;
+    })
+    .WithName("GetOneCategory")
+    .HasApiVersion(1.0);
+
+versionedEndpointRouteBuilder.MapPost("api/v{version:apiVersion}/categories", async (ICategoriesService categoriesService, CategoryCreateRequest request) =>
+{
+    var createdProduct = await categoriesService.Create(request);
+
+    return Results.Created($"api/v1/categories/{createdProduct?.Id}", createdProduct);
+})
+.WithName("CreateCategory")
+.HasApiVersion(1.0);
+
 app.Run();

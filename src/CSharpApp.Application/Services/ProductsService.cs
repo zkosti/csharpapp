@@ -22,10 +22,9 @@ public class ProductsService : IProductsService
         var response = await _httpClient.GetAsync(_restApiSettings.Products);
         response.EnsureSuccessStatusCode();
 
-        var content = await response.Content.ReadAsStringAsync();
-        var res = JsonSerializer.Deserialize<List<Product>>(content);
+        var products = await response.Content.ReadFromJsonAsync<List<Product>>();
 
-        return (res ?? []).AsReadOnly();
+        return (products ?? []).AsReadOnly();
     }
 
     public async Task<Product?> GetOne(int id)
@@ -43,7 +42,7 @@ public class ProductsService : IProductsService
         return await response.Content.ReadFromJsonAsync<Product>();
     }
 
-    public async Task<Product?> Create(CreateProductRequest request)
+    public async Task<Product?> Create(ProductCreateRequest request)
     {
         var response = await _httpClient.PostAsJsonAsync(_restApiSettings.Products, request);
 
