@@ -5,6 +5,16 @@ namespace CSharpApp.Tests;
 
 public class CommonServices
 {
+    public static HttpResponseMessage CreateHttpResponse(string json, HttpStatusCode statusCode) //Fake HTTP response
+    {
+        return new HttpResponseMessage(statusCode)
+        {
+            Content = new StringContent(
+                json,
+                Encoding.UTF8,
+                "application/json")
+        };
+    }
 
     public class HttpMessageHandlerStub : HttpMessageHandler
     {
@@ -19,16 +29,5 @@ public class CommonServices
         {
             return Task.FromResult(_response);
         }
-    }
-
-    public static HttpResponseMessage CreateHttpResponse(string json, HttpStatusCode statusCode) //Fake HTTP response
-    {
-        return new HttpResponseMessage(statusCode)
-        {
-            Content = new StringContent(
-                json,
-                Encoding.UTF8,
-                "application/json")
-        };
     }
 }
