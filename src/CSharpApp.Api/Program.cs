@@ -77,4 +77,15 @@ versionedEndpointRouteBuilder.MapPost("api/v{version:apiVersion}/categories", as
 .WithName("CreateCategory")
 .HasApiVersion(1.0);
 
+//Auth Login endpoints
+versionedEndpointRouteBuilder.MapPost("api/v{version:apiVersion}/auth/login", async (IAuthService authService) =>
+{
+    var login = await authService.Login();
+
+    return Results.Ok(login);
+})
+.WithName("Login")
+.HasApiVersion(1.0);
+
+
 app.Run();
