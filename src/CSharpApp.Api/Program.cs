@@ -1,4 +1,5 @@
 using CSharpApp.Core.Dtos;
+using CSharpApp.Infrastructure.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,8 @@ builder.Services.AddProblemDetails();
 builder.Services.AddApiVersioning();
 
 var app = builder.Build();
+
+app.UseMiddleware<PerformanceMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
