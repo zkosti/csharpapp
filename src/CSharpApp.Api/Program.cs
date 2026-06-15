@@ -93,7 +93,7 @@ versionedEndpointRouteBuilder.MapPost("api/v{version:apiVersion}/auth/login", as
 versionedEndpointRouteBuilder.MapGet("api/v{version:apiVersion}/auth/profile", async (IAuthService authService, HttpContext httpContext) =>
 {
     var authorizationHeader = httpContext.Request.Headers.Authorization.ToString();
-    var bearerToken =  authorizationHeader["Bearer ".Length..];
+    var bearerToken = authorizationHeader["Bearer ".Length..];
 
     var profile = await authService.GetUserProfile(bearerToken);
 
@@ -104,9 +104,6 @@ versionedEndpointRouteBuilder.MapGet("api/v{version:apiVersion}/auth/profile", a
 
 versionedEndpointRouteBuilder.MapPost("api/v{version:apiVersion}/auth/refresh-token", async (IAuthService authService, RefreshTokenRequest request) =>
 {
-    //var authorizationHeader = httpContext.Request.Headers.Authorization.ToString();
-    //var bearerToken =  authorizationHeader["Bearer ".Length..];
-
     var refreshToken = await authService.RefreshToken(request);
 
     return Results.Ok(refreshToken);
