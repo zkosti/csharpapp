@@ -1,4 +1,4 @@
-using CSharpApp.Application.TokenService;
+//using CSharpApp.Application.TokenService;
 
 namespace CSharpApp.Infrastructure.Configuration;
 
@@ -11,9 +11,7 @@ public static class DefaultConfiguration
 
         services.Configure<RestApiSettings>(configuration!.GetSection(nameof(RestApiSettings)));
         services.Configure<HttpClientSettings>(configuration.GetSection(nameof(HttpClientSettings)));
-        services.AddScoped<ITokenService, TokenService>();
-        services.AddTransient<JwtHandler>();
-        
+              
         return services;
     }
 }

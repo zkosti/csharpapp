@@ -78,13 +78,37 @@ versionedEndpointRouteBuilder.MapPost("api/v{version:apiVersion}/categories", as
 .HasApiVersion(1.0);
 
 //Auth Login endpoints
-versionedEndpointRouteBuilder.MapPost("api/v{version:apiVersion}/auth/login", async (IAuthService authService) =>
+versionedEndpointRouteBuilder.MapPost("api/v{version:apiVersion}/auth/login", async (IAuthService authService, LoginRequest request) =>
 {
-    var login = await authService.Login();
+    var login = await authService.Login(request);
 
     return Results.Ok(login);
 })
 .WithName("Login")
+.HasApiVersion(1.0);
+
+versionedEndpointRouteBuilder.MapGet("api/v{version:apiVersion}/auth/profile", async (IAuthService authService, HttpContext httpContext) =>
+{
+    var authorizationHeader = httpContext.Request.Headers.Authorization.ToString();
+    var bearerToken =  authorizationHeader["Bearer ".Length..];
+
+    var profile = await authService.GetUserProfile(bearerToken);
+
+    return Results.Ok(profile);
+})
+.WithName("Profile")
+.HasApiVersion(1.0);
+
+versionedEndpointRouteBuilder.MapPost("api/v{version:apiVersion}/auth/refresh-token", async (IAuthService authService, RefreshTokenRequest request) =>
+{
+    //var authorizationHeader = httpContext.Request.Headers.Authorization.ToString();
+    //var bearerToken =  authorizationHeader["Bearer ".Length..];
+
+    var refreshToken = await authService.RefreshToken(request);
+
+    return Results.Ok(refreshToken);
+})
+.WithName("Refresh-Token")
 .HasApiVersion(1.0);
 
 

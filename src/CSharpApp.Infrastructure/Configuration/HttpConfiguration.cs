@@ -15,14 +15,12 @@ public static class HttpConfiguration
         services.AddHttpClient<IProductsService, ProductsService>(client =>
         {
             client.BaseAddress = new Uri(configuration["RestApiSettings:BaseUrl"]!);
-        })
-        .AddHttpMessageHandler<JwtHandler>();
+        });
 
         services.AddHttpClient<ICategoriesService, CategoriesService>(client =>
         {
             client.BaseAddress = new Uri(configuration["RestApiSettings:BaseUrl"]!);
-        })
-        .AddHttpMessageHandler<JwtHandler>();
+        });
 
         return services;
     }
