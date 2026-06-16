@@ -32,7 +32,6 @@ public class UnitTestCategoryService
                     """;
 
         var response = CommonServices.CreateHttpResponse(categories, HttpStatusCode.OK);
-
         var service = CreateService(response);
 
         var result = await service.GetCategories();
@@ -55,7 +54,6 @@ public class UnitTestCategoryService
                         """;
 
         var response = CommonServices.CreateHttpResponse(category, HttpStatusCode.OK);
-
         var service = CreateService(response);
 
         var result = await service.GetOne(1);
@@ -68,7 +66,6 @@ public class UnitTestCategoryService
     public async Task GetOne_ReturnsNull_WhenApiReturnsNotFound()
     {
         var response = new HttpResponseMessage(HttpStatusCode.BadRequest);
-
         var service = CreateService(response);
 
         var result = await service.GetOne(999);
@@ -98,6 +95,7 @@ public class UnitTestCategoryService
 
         var response = CommonServices.CreateHttpResponse(createdCategory, HttpStatusCode.Created);
         var service = CreateService(response);
+
         var result = await service.Create(request);
 
         Assert.NotNull(result);
@@ -117,19 +115,20 @@ public class UnitTestCategoryService
 
         var response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
         var service = CreateService(response);
+
         var result = await service.Create(request);
 
         Assert.Null(result);
     }
 
-    private static CategoriesService CreateService(HttpResponseMessage response) // Helper method to create Service with mocked HttpClient
+    private static CategoriesService CreateService(HttpResponseMessage response)
     {
         var handler = new CommonServices.HttpMessageHandlerStub(response);
 
         var options = Options.Create(new RestApiSettings
         {
             BaseUrl = "http://testapi/v1/",
-            Products = "categories"
+            Categories = "categories"
         });
 
         var httpClient = new HttpClient(handler)

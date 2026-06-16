@@ -28,6 +28,7 @@ public class UnitTestAuthService
         var service = CreateService(response);
 
         var result = await service.Login(request);
+        
         Assert.NotNull(result);
         Assert.Equal("test-access-token", result.AccessToken);
         Assert.Equal("test-refresh-token", result.RefreshToken);
@@ -68,6 +69,7 @@ public class UnitTestAuthService
         var service = CreateService(response);
 
         var result = await service.GetUserProfile(bearerToken);
+        
         Assert.NotNull(result);
         Assert.Equal(1, result.Id);
         Assert.Equal("john@mail.com", result.Email);
@@ -122,14 +124,14 @@ public class UnitTestAuthService
         await Assert.ThrowsAsync<HttpRequestException>(() => service.RefreshToken(request));
     }
     
-    private static AuthService CreateService(HttpResponseMessage response) // Helper method to create Service with mocked HttpClient
+    private static AuthService CreateService(HttpResponseMessage response)
     {
         var handler = new CommonServices.HttpMessageHandlerStub(response);
 
         var options = Options.Create(new RestApiSettings
         {
             BaseUrl = "http://testapi/v1/",
-            Auth = "auth/login",
+            Auth = "auth",
         });
 
         var httpClient = new HttpClient(handler)

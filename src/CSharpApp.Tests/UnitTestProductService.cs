@@ -50,7 +50,6 @@ public class UnitTestProductService
                     """;
 
         var response = CommonServices.CreateHttpResponse(products, HttpStatusCode.OK);
-
         var service = CreateService(response);
 
         var result = await service.GetProducts();
@@ -82,7 +81,6 @@ public class UnitTestProductService
                     """;
 
         var response = CommonServices.CreateHttpResponse(product, HttpStatusCode.OK);
-
         var service = CreateService(response);
 
         var result = await service.GetOne(1);
@@ -95,9 +93,8 @@ public class UnitTestProductService
     public async Task GetOne_ReturnsNull_WhenApiReturnsProductNotFound()
     {
         var response = new HttpResponseMessage(HttpStatusCode.BadRequest);
-
         var service = CreateService(response);
-
+        
         var result = await service.GetOne(999);
 
         Assert.Null(result);
@@ -113,7 +110,7 @@ public class UnitTestProductService
             Price = 10,
             Description = "This is a test description",
             CategoryId = 1,
-            Images = new List<string> { "https://placeimg.com/640/480/any" }
+            Images = ["https://placeimg.com/640/480/any"]
         };
 
         var createdProduct = """

@@ -16,7 +16,7 @@ public class AuthService : IAuthService
 
     public async Task<LoginResponse?> Login(LoginRequest request)
     {
-        var response = await _httpClient.PostAsJsonAsync(_restApiSettings.Auth + "/login", request);
+        var response = await _httpClient.PostAsJsonAsync($"{_restApiSettings.Auth}/login", request);
         response.EnsureSuccessStatusCode();
 
         return await response.Content.ReadFromJsonAsync<LoginResponse>();
@@ -24,7 +24,7 @@ public class AuthService : IAuthService
 
     public async Task<UserProfileResponse?> GetUserProfile(string bearerToken)
     {
-        var request = new HttpRequestMessage(HttpMethod.Get, _restApiSettings.Auth + "/profile");
+        var request = new HttpRequestMessage(HttpMethod.Get, $"{_restApiSettings.Auth}/profile");
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
 
         var response = await _httpClient.SendAsync(request);
@@ -35,7 +35,7 @@ public class AuthService : IAuthService
 
     public async Task<LoginResponse?> RefreshToken(RefreshTokenRequest request)
     {
-        var response = await _httpClient.PostAsJsonAsync(_restApiSettings.Auth + "/refresh-token", request);
+        var response = await _httpClient.PostAsJsonAsync($"{_restApiSettings.Auth}/refresh-token", request);
         response.EnsureSuccessStatusCode();
 
         return await response.Content.ReadFromJsonAsync<LoginResponse>();

@@ -1,5 +1,3 @@
-//using CSharpApp.Application.TokenService;
-
 namespace CSharpApp.Infrastructure.Configuration;
 
 public static class DefaultConfiguration
